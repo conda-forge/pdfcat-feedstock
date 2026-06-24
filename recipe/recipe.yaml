@@ -43,8 +43,10 @@ requirements:
 
 tests:
   - script:
-      - pdfcat --help
-      - pdfcat --version
+      - if: build_platform == host_platform
+        then:
+        - pdfcat --help
+        - pdfcat --version
   - package_contents:
       bin:
         - pdfcat
