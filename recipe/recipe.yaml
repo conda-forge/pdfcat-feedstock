@@ -23,13 +23,13 @@ build:
         then:
           - cargo auditable install --path=. --root="$PREFIX" --no-track --locked --bins
           # copy man page
-          - mkdir -p "$PREFIX/share/man/man1"
+          - mkdir -p "$PREFIX"/share/man/man1
           - 'MAN_PAGE=$(find "$SRC_DIR/target" -name pdfcat.1 | head -1) && test -n "$MAN_PAGE" || { echo "pdfcat.1 not found in $SRC_DIR/target"; exit 1; } && cp "$MAN_PAGE" "$PREFIX/share/man/man1/pdfcat.1"'
       - if: win
         then:
           - cargo auditable install --path=. --root="%LIBRARY_PREFIX%" --no-track --locked --bins
           # copy man page
-          - mkdir "%LIBRARY_PREFIX%\share\man\man1"
+          - mkdir "%LIBRARY_PREFIX%"\share\man\man1
           - powershell -Command "$f = (Get-ChildItem -Path \"$env:SRC_DIR\target\" -Filter 'pdfcat.1' -Recurse | Select-Object -First 1); if ($null -eq $f) { throw 'pdfcat.1 not found under $env:SRC_DIR\target' }; Copy-Item $f.FullName -Destination \"%LIBRARY_PREFIX%\share\man\man1\pdfcat.1\""
       - cargo-bundle-licenses --format=yaml --output=../../THIRDPARTY.yml
 
@@ -43,10 +43,8 @@ requirements:
 
 tests:
   - script:
-      - if: build_platform == host_platform
-        then:
-        - pdfcat --help
-        - pdfcat --version
+      - pdfcat --help
+      - pdfcat --version
   - package_contents:
       bin:
         - pdfcat
